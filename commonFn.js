@@ -330,6 +330,105 @@ function addMouseWheel(obj, fn1, fn2){
 	function fn(ev){
 		var ev = ev || window.event;
 		var iBtn = false;
+		if(ev.wheelDelta){
+			iBtn = ev.wheelDelta > 0 ? true : false;
+		}else{
+			iBtn = ev.detail < 0 ? true : false;
+		}
+
+		iBtn ? fn1.call(obj) : fn2.call(obj);
+
+		if(ev.preventDefault){
+			ev.preventDefault();
+		}
+
+		return false;
+	}
+}
+
+// 覆盖配置参数
+function extend(obj1, obj2){
+	for(var attr in obj2){
+		obj1[attr] = obj2[attr];
+	}
+}
+
+// 自定义事件
+function bindEvent(obj, events, fn){
+	obj.listener = obj.listener || {};
+	obj.listener[events] = obj.listener[events] || [];
+	obj.listener[events].push(fn);
+
+	if(obj.nodeType == 1){
+		if(obj.addEventListener){
+			obj.addEventListener(events, fn, false);
+		}else{
+			obj.attachEvent('on'+events, function(){
+				fn.call(obj);
+			});
+		}
+	}
+}
+
+// 主动触发事件
+function fireEvent(obj, events){
+	if(obj.listener && obj.listener[events]){
+		for (var i = 0; i < obj.listener[events].length; i++) {
+			obj.listener[events][i]();
+		}
+	}
+}
+
+function ajax(opt){
+	var xhr = null;
+
+	if(window.XMLHttpRequest){
+		xhr = new XMLHttpRequest();
+	}else{
+		xhr = new ActiveXObject('Microsoft.XMLHTTP');
+	}
+
+	var defalut = {
+		method :   opt.method || 'get',
+		url :      opt.url || '',
+		data :     opt.data || '',
+		dataType : opt.dataType || 'text',
+		success :  opt.success || function (){},
+		fail :     opt.fail || function(){}
+	}
+
+	if(defalut.method == 'get' && defalut.data){
+		defalut.url += '?'+defalut.data;
+	}
+
+	xhr.open(defalut.method, defalut.url, true);
+	if(defalut.method == 'get'){
+		xhr.send();
+	}else{
+		xhr.setRquestHeader('Content-type', 'application/x-www-form-urlencoded');
+		xhr.send(o.data);
+	}
+
+	xhr.onreadystatechange = function(){
+
+		if(xhr.readyState == 4){
+			if(xhr.status == 200){
+				var data = xhr.responseText;
+
+				switch(defalut.dataType){
+					case 'json':
+						data = JSON.parse(data);
+						break;
+					case 'xml':
+						data = xml.responseXML;
+						break;
+				}
+
+				defalut.success(data);
+			}else{
+				defalut.fail(xhr.status);
+			}
+		}
 
 	}
 }
