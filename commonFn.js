@@ -432,3 +432,16 @@ function ajax(opt){
 
 	}
 }
+
+// 设置时间
+/*
+	例子: time = 2014-01-01;
+*/
+function newDate(time){
+	if(!time) return '';
+	var time = time.split(/[^\d]/g);
+	var date = new Date();
+	date.setUTCFullYear(time[0], time[1] - 1, time[2]);
+	date.setHours(0, 0, 0, 0);
+	return date;
+}
