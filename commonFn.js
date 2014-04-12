@@ -89,11 +89,6 @@ function scrollTop(){
 	return document.documentElement.scrollTop || document.body.scrollTop;
 }
 
-// 滚动条左
-function scrollLeft(){
-	return document.documentElement.scrollLeft || document.body.scrollLeft;
-}
-
 // 内容高度
 function scrollH(){
 	return document.body.scrollHeight;
