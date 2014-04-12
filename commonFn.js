@@ -84,14 +84,22 @@ function hasClass(obj, sClass){
 	return false;
 }
 
+// 窗口可视区宽高
+function view(){
+	return {
+		w: document.documentElement.clientWidth,
+		h: document.documentElement.clientHeight
+	}
+}
+
 // 滚动条高
 function scrollTop(){
 	return document.documentElement.scrollTop || document.body.scrollTop;
 }
 
 // 内容高度
-function scrollH(){
-	return document.body.scrollHeight;
+function scrollH(obj){
+	return obj.scrollHeight;
 }
 
 // 文档高
@@ -102,14 +110,6 @@ function offsetH(){
 // 文档宽
 function offsetW(){
 	return document.body.offsetWidth;
-}
-
-// 可视区宽高
-function view(){
-	return {
-		w: document.documentElement.clientWidth,
-		h: document.documentElement.clientHeight
-	}
 }
 
 // 左边距
