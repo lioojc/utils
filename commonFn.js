@@ -231,8 +231,8 @@ function toDouble(num){
 function drag(obj){
 	obj.onmousedown = function(ev){
 		var ev = ev || window.event;
-		var disX = ev.clientX - this.offsetLeft;
-		var disY = ev.clientY - this.offsetTop;
+		var disX = ev.clientX - obj.offsetLeft;
+		var disY = ev.clientY - obj.offsetTop;
 
 		if(obj.setCapture){
 			obj.setCapture();
@@ -253,6 +253,25 @@ function drag(obj){
 
 		return false;
 	}
+}
+
+// 碰撞
+function touch(src, target){
+	var srcL1 = src.offsetLeft;
+	var srcT1 = src.offsetTop;
+	var srcL2 = src.offsetLeft + src.offsetWidth;
+	var srcT2 = src.offsetTop + src.offsetHeight;
+
+	var targetL1 = target.offsetLeft;
+	var targetT1 = target.offsetTop;
+	var targetL2 = target.offsetLeft + target.offsetWidth;
+	var targetT2 = target.offsetTop + target.offsetHeight;
+
+	if( srcL2 > targetL1 && srcL1 < targetL2 && srcT2 > targetT1 && srcT1 < targetT2){
+		return true;
+	}
+
+	return false;
 }
 
 // 设置cookie
