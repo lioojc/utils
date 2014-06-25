@@ -420,7 +420,7 @@ function ajax(opt){
 		xhr.send();
 	}else{
 		xhr.setRquestHeader('Content-type', 'application/x-www-form-urlencoded');
-		xhr.send(o.data);
+		xhr.send(defalut.data);
 	}
 
 	xhr.onreadystatechange = function(){
