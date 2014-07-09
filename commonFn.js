@@ -452,13 +452,13 @@ function ajax(opt){
 	例子: time = 2014-01-01;
 */
 function newDate(time){
+	var time = time.split(/[^\d]/g);
 	if(!time) return '';
 	var arg = arguments;
 	if(arg.length === 3){
 		time = [].slice.call(arg, 0);
 	}
 	
-	var time = time.split(/[^\d]/g);
 	var date = new Date();
 	date.setUTCFullYear(time[0], time[1] - 1, time[2]);
 	date.setHours(0, 0, 0, 0);
