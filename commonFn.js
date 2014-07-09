@@ -453,6 +453,11 @@ function ajax(opt){
 */
 function newDate(time){
 	if(!time) return '';
+	var arg = arguments;
+	if(arg.length === 3){
+		time = [].slice.call(arg, 0);
+	}
+	
 	var time = time.split(/[^\d]/g);
 	var date = new Date();
 	date.setUTCFullYear(time[0], time[1] - 1, time[2]);
