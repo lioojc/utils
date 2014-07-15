@@ -458,7 +458,6 @@ function newDate(time){
 	if(arg.length === 3){
 		time = [].slice.call(arg, 0);
 	}
-	
 	var date = new Date();
 	date.setUTCFullYear(time[0], time[1] - 1, time[2]);
 	date.setHours(0, 0, 0, 0);
