@@ -4,15 +4,6 @@
  */
 var utils = {
 	/**
-	 * [hasPrototypeProperty 是否是原型链属性]
-	 * @param  {[object]}  obj  [对象]
-	 * @param  {[string]}  name [属性]
-	 * @return {Boolean}      [true: 是;false: 不是]
-	 */
-	hasPrototypeProperty: function(obj, name){
-		return !obj.hasOwnProperty(name) && (name in obj);
-	},
-	/**
 	 * [getStyle 获取非行间样式]
 	 * @param  {[object]} obj  [node节点]
 	 * @param  {[string]} attr [属性]
@@ -543,5 +534,56 @@ var utils = {
 		date.setUTCFullYear(time[0], time[1] - 1, time[2]);
 		date.setHours(0, 0, 0, 0);
 		return date;
+	},
+	/**
+	 * [hasPrototypeProperty 是否是原型链属性]
+	 * @param  {[object]}  obj  [对象]
+	 * @param  {[string]}  name [属性]
+	 * @return {Boolean}      [true: 是;false: 不是]
+	 */
+	hasPrototypeProperty: function(obj, name){
+		return !obj.hasOwnProperty(name) && (name in obj);
+	},
+	/**
+	 * [winPos 浏览器窗口位置]
+	 * @return {[json]} [leftPos: 距离左边距离; topPos: 距离上边距离]
+	 * Firefox、Safari 和 Chrome 始终返回页面中每个框架的 top.screenX 和top.screenY 值。
+	 * 即使在页面由于被设置了外边距而发生偏移的情况下，相对于 window 对象使用screenX 和 screenY 每次也都会返回相同的值。
+	 * 而 IE 和 Opera 则会给出框架相对于屏幕边界的精确坐标值。
+	 * 注意：无法在跨浏览器的条件下取得窗口左边和上边的精确坐标值
+	 */
+	winPos: function(){
+		return {
+			leftPos: (typeof window.screenLeft == 'number') ? window.screenLeft : window.screenX,
+			topPos: (typeof window.screenTop == 'number') ? window.screenTop: window.screenY
+		}
+	},
+	/**
+	 * [hasPlugin 检测插件]
+	 * @param  {[string]}  name [插件名字]
+	 * @return {Boolean}      [true: 有; false: 没有]
+	 * IE 不支持 Netscape 式的插件
+	 */
+	hasPlugin: function(name){
+		name = name.toLowerCase();
+		for (var i = 0; i < navigator.plugins.length; i++) {
+			if(navigator.plugins[i].name.toLowerCase().indexOf(name) > -1){
+				return true;
+			}
+		}
+		return false;
+	},
+	/**
+	 * [hasIEPlugin 检测 IE 中的插件]
+	 * @param  {[string]}  name [插件名]
+	 * @return {Boolean}      [true: 有；false: 没有]
+	 */
+	hasIEPlugin: function(name){
+		try{
+			new ActiveXObject(name);
+			return true;
+		}catch(ex){
+			return false;
+		}
 	}
 }
