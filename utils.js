@@ -463,3 +463,28 @@ function newDate(time){
 	date.setHours(0, 0, 0, 0);
 	return date;
 }
+
+/**
+ * [utils 工具函数]
+ * @type {Object}
+ */
+var utils = {
+	/**
+	 * [hasPrototypeProperty 是否是原型链属性]
+	 * @param  {[Object]}  obj  [对象]
+	 * @param  {[String]}  name [属性]
+	 * @return {Boolean}      [true: 是;false: 不是]
+	 */
+	hasPrototypeProperty: function(obj, name){
+		return !obj.hasOwnProperty(name) && (name in obj);
+	},
+	/**
+	 * [getStyle 获取非行间样式]
+	 * @param  {[Object]} obj  [node节点]
+	 * @param  {[String]} attr [属性]
+	 * @return {[String]}      [属性值]
+	 */
+	getStyle: function(obj, attr){
+		return obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj, false)[attr];
+	}
+}
