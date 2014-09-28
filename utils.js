@@ -753,5 +753,122 @@ var utils = {
 			browser: browser,
 			system: system
 		};
+	},
+	/**
+	 * [cutstr 字符串长度截取]
+	 * @param  {[string]} str [被截取的字符串]
+	 * @param  {[number]} len [长度]
+	 * @return {[string]}     [截取的字符串]
+	 */
+	cutstr: function(str, len) {
+		var temp,
+			icount = 0,
+			patrn = /[^\x00-\xff]/,
+			strre = "";
+		for (var i = 0; i < str.length; i++) {
+			if (icount < len - 1) {
+				temp = str.substr(i, 1);
+				if (patrn.exec(temp) == null) {
+						icount = icount + 1;
+				} else {
+					icount = icount + 2;
+				}
+				strre += temp;
+			} else {
+				break;
+			}
+		}
+		return strre + "...";
+	},
+	/**
+	 * [replaceAll 替换全部]
+	 * @param  {[string]} s1 [被替换的字符串]
+	 * @param  {[string]} s2 [替换字符串]
+	 * @return {[string]}    [新的字符串]
+	 */
+	replaceAll: function(s1, s2){
+		return String.prototype.replace(new RegExp(s1, "gm"), s2);
+	},
+	/**
+	 * [trim 清除空格]
+	 * @return {[string]} [新字符串]
+	 */
+	trim: function(){
+		var reExtraSpace = /^\s*(.*?)\s+$/;
+		return String.prototype.replace(reExtraSpace, "$1");
+	},
+	/**
+	 * [ltrim 清除左空格]
+	 * @param  {[string]} s [要清除的字符串]
+	 * @return {[string]}   [清除后的字符串]
+	 */
+	ltrim: function(s){
+		return s.replace(/^(\s*|*)/, "");
+	},
+	/**
+	 * [rtrim 清除右空格]
+	 * @param  {[string]} s [要清除的字符串]
+	 * @return {[string]}   [清除后的字符串]
+	 */
+	rtrim: function(s){
+		return s.replace(/(\s*|*)$/, "");
+	},
+	/**
+	 * [startWith 判断是否以某个字符串开头]
+	 * @param  {[tring]} s [开头字符串]
+	 * @return {[boolean]}   [true or false]
+	 */
+	startWith: function(s){
+		return String.prototype.indexOf(s) == 0;
+	},
+	/**
+	 * [endWith 判断是否以某个字符串结束]
+	 * @param  {[string]} origin [源字符串]
+	 * @param  {[string]} s      [结束字符串]
+	 * @return {[boolean]}        [true or false]
+	 */
+	endWith: function(origin, s){
+		var l = origin.length - s.length;
+		return String.prototype.lastIndexOf(s) == l;
+	},
+	/**
+	 * [htmlEncode 转义html标签]
+	 * @param  {[string]} text [要转义的html字符串]
+	 * @return {[string]}      [转义后的字符串]
+	 */
+	htmlEncode: function(text){
+		return text.replace(/&/g, '&').replace(/\"/g, '"').replace(/</g, '<').replace(/>/g, '>');
+	},
+	/**
+	 * [addFavorite 加入收藏夹]
+	 * @param {[string]} sUrl   [指定的URL添加到收藏夹]
+	 * @param {[string]} sTitle [标题]
+	 */
+	addFavorite: function(sUrl, sTitle){
+		try{
+			window.external.addFavorite(sUrl, sTitle);
+		}catch(e){
+			try{
+				window.sidebar.addPanel(sTitle, sUrl, "");
+			}catch(e){
+				alert("加入收藏失败，请使用Ctrl+D进行添加");
+			}
+		}
+	},
+	setHomePage: function(url){
+		if(document.all){
+			document.body.style.behavior = "url(#default#homepage)";
+			document.body.setHomePage(url);
+		}else if(window.sidebar){
+			if(window.netscape){
+				try{
+					netscape.security.PrivilegeManager.enablePrivilege("UniversalXpConnect");
+				}catch(e){
+					alert("该操作被浏览器拒绝，如果想启用该功能，请在地址栏内输入 about:config,然后将项 signed.applets.codebase_principal_support 值该为true");
+				}
+			}
+			var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces.nsIPrefBranch);
+			prefs.setCharPref('browser.startup.homepage', url);
+		}
 	}
 }
